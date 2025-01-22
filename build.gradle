@@ -14,14 +14,22 @@ repositories {
 }
 
 dependencies {
+	// 스프링 부트 스타터
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+	// 마리아 db 클라이언트
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+
+	// 롬복
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+
+	// 테스팅
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.junit.jupiter:junit-jupiter'
+	testImplementation 'com.h2database:h2'
 }
 
 tasks.named('test') {
