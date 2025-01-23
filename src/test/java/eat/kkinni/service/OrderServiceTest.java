@@ -11,6 +11,8 @@ import static org.mockito.Mockito.when;
 import eat.kkinni.repository.OrderRepository;
 import eat.kkinni.service.domain.Order;
 import eat.kkinni.service.validation.ErrorMessage;
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -19,7 +21,6 @@ import org.mockito.MockitoAnnotations;
 
 // src/test/java/eat/kkinni/service/OrderServiceTest.java
 class OrderServiceTest {
-
   @Mock
   private OrderRepository orderRepository;
 
@@ -63,4 +64,73 @@ class OrderServiceTest {
     assertEquals(MISSING_INPUT.getMessage(), exception.getMessage());
     verify(orderRepository, never()).save(any(Order.class)); // Repository는 호출되지 않아야 함
   }
+
+  @DisplayName("특정 ID로 주문 조회에 성공한다")
+  @Test
+  void findOrderById_success() {
+    // Given
+    Long orderId = 1L;
+    Order order = new Order(orderId, "김주형", "닭가슴살 볶음밥", "준비중");
+    when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
+
+    // When
+    Order foundOrder = orderService.findOrderById(orderId);
+
+    // Then
+    assertNotNull(foundOrder);
+    assertEquals(orderId, foundOrder.getId());
+    assertEquals("김주형", foundOrder.getUserName());
+    assertEquals("닭가슴살 볶음밥", foundOrder.getItem());
+    assertEquals("준비중", foundOrder.getStatus());
+    verify(orderRepository, times(1)).findById(orderId);
+  }
+
+  @DisplayName("존재하지 않는 ID로 주문 조회에 실패한다")
+  @Test
+  void findOrderById_failure_notFound() {
+    // Given
+    Long invalidOrderId = 99L;
+    when(orderRepository.findById(invalidOrderId)).thenReturn(Optional.empty());
+
+    // When & Then
+    IllegalArgumentException exception = assertThrows(
+        IllegalArgumentException.class,
+        () -> orderService.findOrderById(invalidOrderId)
+    );
+
+    assertEquals(MISSING_ID.getMessage(), exception.getMessage());
+    verify(orderRepository, times(1)).findById(invalidOrderId);
+  }
+
+  @DisplayName("데이터베이스에 저장된 모든 주문을 조회한다")
+  @Test
+  void findAllOrders_success() {
+    // Given
+    List<Order> orders = List.of(
+        new Order(1L, "김주형", "닭가슴살 볶음밥", "준비중"),
+        new Order(2L, "이진수", "햄치즈에그 샌드위치", "배달중"),
+        new Order(3L, "노영지", "크랩샐러드", "배달완료")
+    );
+    when(orderRepository.findAll()).thenReturn(orders);
+
+    // When
+    List<Order> foundOrders = orderService.findAllOrders();
+
+    // Then
+    assertEquals(3, ((List<?>) foundOrders).size());
+    assertEquals("김주형", foundOrders.get(0).getUserName());
+    assertEquals("닭가슴살 볶음밥", foundOrders.get(0).getItem());
+    assertEquals("준비중", foundOrders.get(0).getStatus());
+
+    assertEquals("이진수", foundOrders.get(1).getUserName());
+    assertEquals("햄치즈에그 샌드위치", foundOrders.get(1).getItem());
+    assertEquals("배달중", foundOrders.get(1).getStatus());
+
+    assertEquals("노영지", foundOrders.get(2).getUserName());
+    assertEquals("크랩샐러드", foundOrders.get(2).getItem());
+    assertEquals("배달완료", foundOrders.get(2).getStatus());
+
+    verify(orderRepository, times(1)).findAll();
+  }
+
 }
