@@ -3,6 +3,9 @@ plugins {
 	id 'org.springframework.boot' version '3.4.1'
 	id 'io.spring.dependency-management' version '1.1.3'
 	id 'java'
+	id 'jacoco'
+
+
 }
 
 group = 'com.kkinni'
@@ -44,4 +47,14 @@ java {
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(17)
 	}
+
+	jacocoTestReport {
+		dependsOn test // 테스트 후 실행
+		reports {
+			xml.required = true
+			csv.required = false
+			html.outputLocation = file("${buildDir}/jacocoHtml")
+		}
+	}
+
 }
