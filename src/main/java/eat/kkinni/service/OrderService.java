@@ -41,4 +41,15 @@ public class OrderService {
     order.setStatus(newStatus);
     return orderRepository.save(order);
   }
+
+  public Order updateOrderDetails(Long orderId, Order updatedOrder) {
+    Order order = orderRepository.findById(orderId)
+        .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.MISSING_ID.getMessage()));
+
+    order.setUserName(updatedOrder.getUserName());
+    order.setItem(updatedOrder.getItem());
+    order.setStatus(updatedOrder.getStatus());
+
+    return orderRepository.save(order);
+  }
 }

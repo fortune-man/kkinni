@@ -172,5 +172,27 @@ class OrderServiceTest {
     verify(orderRepository, never()).save(any(Order.class));
   }
 
+  @DisplayName("상세 주문 정보 수정에 성공하는지 테스트")
+  @Test
+  void updateOrderDetails_success() {
+    // Given
+    Long orderId = 1L;
+    Order existingOrder = new Order(orderId, "김주형", "닭가슴살 볶음밥", "준비중");
+    Order updatedOrder = new Order(orderId, "김이름", "새우볶음밥", "배달중");
+    when(orderRepository.findById(orderId)).thenReturn(Optional.of(existingOrder));
+    when(orderRepository.save(any(Order.class))).thenReturn(updatedOrder);
+
+    // When
+    Order result = orderService.updateOrderDetails(orderId, updatedOrder);
+
+    // Then
+    assertEquals(orderId, result.getId());
+    assertEquals("김이름", result.getUserName());
+    assertEquals("새우볶음밥", result.getItem());
+    assertEquals("배달중", result.getStatus());
+    verify(orderRepository, times(1)).findById(orderId);
+    verify(orderRepository, times(1)).save(existingOrder);
+  }
+
 
 }
