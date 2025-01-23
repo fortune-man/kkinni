@@ -2,6 +2,7 @@ package eat.kkinni.service;
 
 import eat.kkinni.repository.OrderRepository;
 import eat.kkinni.service.domain.Order;
+import eat.kkinni.service.validation.ErrorMessage;
 import eat.kkinni.service.validation.OrderValidator;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -32,5 +33,12 @@ public class OrderService {
 
   public List<Order> findAllOrders() {
     return orderRepository.findAll();
+  }
+
+  public Order updateOrderStatus(Long orderId, String newStatus) {
+    Order order = orderRepository.findById(orderId)
+        .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.MISSING_ID.getMessage()));
+    order.setStatus(newStatus);
+    return orderRepository.save(order);
   }
 }

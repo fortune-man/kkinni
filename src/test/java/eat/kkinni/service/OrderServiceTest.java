@@ -133,4 +133,24 @@ class OrderServiceTest {
     verify(orderRepository, times(1)).findAll();
   }
 
+  @DisplayName("주문 상태 수정에 성공한다")
+  @Test
+  void updateOrderStatus_success() {
+    // Given
+    Long orderId = 1L;
+    String newStatus = "배달중";
+    Order existingOrder = new Order(orderId, "김주형", "닭가슴살 볶음밥", "준비중");
+    when(orderRepository.findById(orderId)).thenReturn(Optional.of(existingOrder));
+    when(orderRepository.save(any(Order.class))).thenReturn(new Order(orderId, "김주형", "닭가슴살 볶음밥", newStatus));
+
+    // When
+    Order updatedOrder = orderService.updateOrderStatus(orderId, newStatus);
+
+    // Then
+    assertEquals(orderId, updatedOrder.getId());
+    assertEquals(newStatus, updatedOrder.getStatus());
+    verify(orderRepository, times(1)).findById(orderId);
+    verify(orderRepository, times(1)).save(existingOrder);
+  }
+
 }
