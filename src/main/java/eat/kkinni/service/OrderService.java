@@ -1,5 +1,7 @@
 package eat.kkinni.service;
 
+import static eat.kkinni.service.validation.ErrorMessage.MISSING_ID;
+
 import eat.kkinni.repository.OrderRepository;
 import eat.kkinni.service.domain.Order;
 import eat.kkinni.service.validation.ErrorMessage;
@@ -36,15 +38,16 @@ public class OrderService {
   }
 
   public Order updateOrderStatus(Long orderId, String newStatus) {
+    OrderValidator.validateStatus(newStatus); // 상태값 검증
     Order order = orderRepository.findById(orderId)
-        .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.MISSING_ID.getMessage()));
+        .orElseThrow(() -> new IllegalArgumentException(MISSING_ID.getMessage()));
     order.setStatus(newStatus);
     return orderRepository.save(order);
   }
 
   public Order updateOrderDetails(Long orderId, Order updatedOrder) {
     Order order = orderRepository.findById(orderId)
-        .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.MISSING_ID.getMessage()));
+        .orElseThrow(() -> new IllegalArgumentException(MISSING_ID.getMessage()));
 
     order.setUserName(updatedOrder.getUserName());
     order.setItem(updatedOrder.getItem());

@@ -3,6 +3,7 @@ package eat.kkinni.service;
 import static eat.kkinni.service.validation.ErrorMessage.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -194,5 +195,27 @@ class OrderServiceTest {
     verify(orderRepository, times(1)).save(existingOrder);
   }
 
+  @DisplayName("필수 상태값 누락으로 수정 실패")
+  @Test
+  void updateOrder_failure_invalidStatus() {
+    // Given
+    Long orderId = 1L;
+    String invalidStatus = null; // 상태값 누락
+    Order existingOrder = new Order(orderId, "김주형", "닭가슴살 볶음밥", "준비중");
+
+    when(orderRepository.findById(orderId)).thenReturn(Optional.of(existingOrder));
+
+    // When & Then
+    IllegalArgumentException exception = assertThrows(
+        IllegalArgumentException.class,
+        () -> orderService.updateOrderStatus(orderId, invalidStatus)
+    );
+
+    assertEquals(MISSING_STATUS.getMessage(), exception.getMessage());
+
+    // Verify no interactions with the repository due to invalid status
+    verify(orderRepository, never()).findById(anyLong());
+    verify(orderRepository, never()).save(any(Order.class)); // 저장 호출 금지
+  }
 
 }
