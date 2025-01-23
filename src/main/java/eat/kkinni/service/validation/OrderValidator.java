@@ -11,4 +11,10 @@ public class OrderValidator {
       throw new IllegalArgumentException(MISSING_INPUT.getMessage());
     }
   }
+
+  public static void validateStatus(String status) {
+    if (status == null || status.isBlank()) {
+      throw new IllegalArgumentException(ErrorMessage.MISSING_STATUS.getMessage());
+    }
+  }
 }

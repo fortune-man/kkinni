@@ -153,4 +153,24 @@ class OrderServiceTest {
     verify(orderRepository, times(1)).save(existingOrder);
   }
 
+  @DisplayName("존재하지 않는 주문 ID로 조회 시 상태 업데이트에 실패한다")
+  @Test
+  void updateOrderStatus_failure_invalidId() {
+    // Given
+    Long invalidOrderId = 99L;
+    String newStatus = "배달중";
+    when(orderRepository.findById(invalidOrderId)).thenReturn(Optional.empty());
+
+    // When & Then
+    IllegalArgumentException exception = assertThrows(
+        IllegalArgumentException.class,
+        () -> orderService.updateOrderStatus(invalidOrderId, newStatus)
+    );
+
+    assertEquals(MISSING_ID.getMessage(), exception.getMessage());
+    verify(orderRepository, times(1)).findById(invalidOrderId);
+    verify(orderRepository, never()).save(any(Order.class));
+  }
+
+
 }
