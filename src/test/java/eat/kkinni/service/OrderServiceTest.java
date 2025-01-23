@@ -1,5 +1,6 @@
 package eat.kkinni.service;
 
+import static eat.kkinni.service.validation.ErrorMessage.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
@@ -9,6 +10,7 @@ import static org.mockito.Mockito.when;
 
 import eat.kkinni.repository.OrderRepository;
 import eat.kkinni.service.domain.Order;
+import eat.kkinni.service.validation.ErrorMessage;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -16,7 +18,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 // src/test/java/eat/kkinni/service/OrderServiceTest.java
-
 class OrderServiceTest {
 
   @Mock
@@ -59,8 +60,7 @@ class OrderServiceTest {
         () -> orderService.createOrder(invalidOrder)
     );
 
-    assertEquals("필수 입력값이 누락되었습니다.", exception.getMessage());
+    assertEquals(MISSING_INPUT.getMessage(), exception.getMessage());
     verify(orderRepository, never()).save(any(Order.class)); // Repository는 호출되지 않아야 함
   }
-
 }
