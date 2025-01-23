@@ -4,6 +4,7 @@ import static eat.kkinni.service.validation.ErrorMessage.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -216,6 +217,41 @@ class OrderServiceTest {
     // Verify no interactions with the repository due to invalid status
     verify(orderRepository, never()).findById(anyLong());
     verify(orderRepository, never()).save(any(Order.class)); // 저장 호출 금지
+  }
+
+  @DisplayName("주문 삭제에 성공한다")
+  @Test
+  void deleteOrder_success() {
+    // Given
+    Long orderId = 1L;
+    Order existingOrder = new Order(orderId, "김주형", "닭가슴살 볶음밥", "준비중");
+    when(orderRepository.findById(orderId)).thenReturn(Optional.of(existingOrder));
+    doNothing().when(orderRepository).deleteById(orderId); // 삭제 동작 모의
+
+    // When
+    orderService.deleteOrder(orderId);
+
+    // Then
+    verify(orderRepository, times(1)).findById(orderId); // 조회 호출 검증
+    verify(orderRepository, times(1)).deleteById(orderId); // 삭제 호출 검증
+  }
+
+  @DisplayName("존재하지 않는 주문 ID로 삭제에 실패한다")
+  @Test
+  void deleteOrder_failure_invalidId() {
+    // Given
+    Long invalidOrderId = 99L;
+    when(orderRepository.findById(invalidOrderId)).thenReturn(Optional.empty());
+
+    // When & Then
+    IllegalArgumentException exception = assertThrows(
+        IllegalArgumentException.class,
+        () -> orderService.deleteOrder(invalidOrderId)
+    );
+
+    assertEquals(MISSING_ID.getMessage(), exception.getMessage());
+    verify(orderRepository, times(1)).findById(invalidOrderId); // 조회 호출 검증
+    verify(orderRepository, never()).deleteById(invalidOrderId); // 삭제 호출 금지
   }
 
 }

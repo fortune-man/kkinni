@@ -55,4 +55,12 @@ public class OrderService {
 
     return orderRepository.save(order);
   }
+
+  public void deleteOrder(Long orderId) {
+    Order order = orderRepository.findById(orderId)
+        .orElseThrow(() -> new IllegalArgumentException(ErrorMessage.MISSING_ID.getMessage()));
+    orderRepository.deleteById(orderId);
+  }
+
+
 }
