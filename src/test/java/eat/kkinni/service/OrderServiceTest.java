@@ -46,7 +46,7 @@ class OrderServiceTest {
     // Then
     assertNotNull(createdOrder.getId());
     assertEquals("김주형", createdOrder.getUserName());
-    assertEquals("닭가슴살 볶음밥", createdOrder.getItem());
+    assertEquals("닭가슴살 볶음밥", createdOrder.getMenuName());
     assertEquals("준비중", createdOrder.getStatus());
     verify(orderRepository, times(1)).save(any(Order.class));
   }
@@ -82,7 +82,7 @@ class OrderServiceTest {
     assertNotNull(foundOrder);
     assertEquals(orderId, foundOrder.getId());
     assertEquals("김주형", foundOrder.getUserName());
-    assertEquals("닭가슴살 볶음밥", foundOrder.getItem());
+    assertEquals("닭가슴살 볶음밥", foundOrder.getMenuName());
     assertEquals("준비중", foundOrder.getStatus());
     verify(orderRepository, times(1)).findById(orderId);
   }
@@ -121,15 +121,15 @@ class OrderServiceTest {
     // Then
     assertEquals(3, ((List<?>) foundOrders).size());
     assertEquals("김주형", foundOrders.get(0).getUserName());
-    assertEquals("닭가슴살 볶음밥", foundOrders.get(0).getItem());
+    assertEquals("닭가슴살 볶음밥", foundOrders.get(0).getMenuName());
     assertEquals("준비중", foundOrders.get(0).getStatus());
 
     assertEquals("이진수", foundOrders.get(1).getUserName());
-    assertEquals("햄치즈에그 샌드위치", foundOrders.get(1).getItem());
+    assertEquals("햄치즈에그 샌드위치", foundOrders.get(1).getMenuName());
     assertEquals("배달중", foundOrders.get(1).getStatus());
 
     assertEquals("노영지", foundOrders.get(2).getUserName());
-    assertEquals("크랩샐러드", foundOrders.get(2).getItem());
+    assertEquals("크랩샐러드", foundOrders.get(2).getMenuName());
     assertEquals("배달완료", foundOrders.get(2).getStatus());
 
     verify(orderRepository, times(1)).findAll();
@@ -190,7 +190,7 @@ class OrderServiceTest {
     // Then
     assertEquals(orderId, result.getId());
     assertEquals("김이름", result.getUserName());
-    assertEquals("새우볶음밥", result.getItem());
+    assertEquals("새우볶음밥", result.getMenuName());
     assertEquals("배달중", result.getStatus());
     verify(orderRepository, times(1)).findById(orderId);
     verify(orderRepository, times(1)).save(existingOrder);

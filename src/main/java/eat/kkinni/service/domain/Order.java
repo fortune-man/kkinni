@@ -5,6 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 // src/main/java/eat/kkinni/service/domain/Order.java
 @Entity
@@ -16,7 +18,8 @@ public class Order {
   private Long id;
 
   private String userName;
-  private String item;
+  private String menuName; // 필드 이름 수정 (기존 "item")
+
   private String address;
   private String status;
 
@@ -25,10 +28,10 @@ public class Order {
   }
 
   // 모든 필드를 포함한 생성자
-  public Order(Long id, String userName, String item, String status) {
+  public Order(Long id, String userName, String menuName, String status) {
     this.id = id;
     this.userName = userName;
-    this.item = item;
+    this.menuName = menuName;
     this.status = status;
   }
 
@@ -49,12 +52,12 @@ public class Order {
     this.userName = userName;
   }
 
-  public String getItem() {
-    return item;
+  public String getMenuName() {
+    return menuName;
   }
 
-  public void setItem(String item) {
-    this.item = item;
+  public void setMenuName(String menuName) {
+    this.menuName = menuName;
   }
 
   public String getAddress() {

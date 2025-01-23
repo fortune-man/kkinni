@@ -25,7 +25,7 @@ public class OrderService {
   }
 
   private static boolean validate(Order order) {
-    return order.getUserName() == null || order.getItem() == null || order.getStatus() == null;
+    return order.getUserName() == null || order.getMenuName() == null || order.getStatus() == null;
   }
 
   public Order findOrderById(Long orderId) {
@@ -50,7 +50,7 @@ public class OrderService {
         .orElseThrow(() -> new IllegalArgumentException(MISSING_ID.getMessage()));
 
     order.setUserName(updatedOrder.getUserName());
-    order.setItem(updatedOrder.getItem());
+    order.setMenuName(updatedOrder.getMenuName());
     order.setStatus(updatedOrder.getStatus());
 
     return orderRepository.save(order);

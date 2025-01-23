@@ -43,6 +43,7 @@ class OrderControllerTest {
   @Test
   @DisplayName("GET /orders - 성공적으로 모든 주문 조회")
   void getAllOrders_success() throws Exception {
+    // Given
     List<Order> orders = List.of(
         new Order(1L, "김주형", "닭가슴살 볶음밥", "준비중"),
         new Order(2L, "이진수", "햄치즈에그 샌드위치", "배달중")
@@ -50,11 +51,31 @@ class OrderControllerTest {
 
     when(orderService.findAllOrders()).thenReturn(orders);
 
+    // When & Then
     mockMvc.perform(get("/orders")
             .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.size()", is(2)))
         .andExpect(jsonPath("$[0].userName", is("김주형")))
-        .andExpect(jsonPath("$[1].userName", is("이진수")));
+        .andExpect(jsonPath("$[0].menuName", is("닭가슴살 볶음밥")))
+        .andExpect(jsonPath("$[1].userName", is("이진수")))
+        .andExpect(jsonPath("$[1].menuName", is("햄치즈에그 샌드위치")));
+  }
+
+  @Test
+  @DisplayName("GET /orders/{id} - 특정 주문 조회 성공")
+  void getOrderById_success() throws Exception {
+    // Given
+    Order order = new Order(1L, "김주형", "닭가슴살 볶음밥", "준비중");
+    when(orderService.findOrderById(1L)).thenReturn(order);
+
+    // When & Then
+    mockMvc.perform(get("/orders/1")
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.id", is(1)))
+        .andExpect(jsonPath("$.userName", is("김주형")))
+        .andExpect(jsonPath("$.menuName", is("닭가슴살 볶음밥")))
+        .andExpect(jsonPath("$.status", is("준비중")));
   }
 }
