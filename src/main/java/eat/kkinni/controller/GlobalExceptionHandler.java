@@ -1,5 +1,6 @@
 package eat.kkinni.controller;
 
+import eat.kkinni.exception.ResourceNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
