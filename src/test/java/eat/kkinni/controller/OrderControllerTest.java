@@ -78,4 +78,33 @@ class OrderControllerTest {
         .andExpect(jsonPath("$.menuName", is("닭가슴살 볶음밥")))
         .andExpect(jsonPath("$.status", is("준비중")));
   }
+
+  @Test
+  @DisplayName("GET /orders/{id} - 존재하지 않는 주문 조회")
+  void getOrderById_notFound() throws Exception {
+    // Given
+    when(orderService.findOrderById(999L)).thenReturn(null); // 존재하지 않는 ID
+
+    // When & Then
+    mockMvc.perform(get("/orders/999")
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isNotFound()); // 404 기대
+  }
+  @Test
+  @DisplayName("GET /orders/{id} - 유효하지 않은 ID로 요청하면 400 Bad Request를 반환한다")
+  void getOrderById_invalidId_returnsBadRequest() throws Exception {
+    mockMvc.perform(get("/orders/-1")
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isBadRequest());
+  }
+  @Test
+  @DisplayName("GET /orders/{id} - 존재하지 않는 ID로 요청하면 404 Not Found를 반환한다")
+  void getOrderById_notFound_returnsNotFound() throws Exception {
+    when(orderService.findOrderById(999L)).thenReturn(null);
+
+    mockMvc.perform(get("/orders/999")
+            .contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isNotFound());
+  }
+
 }
