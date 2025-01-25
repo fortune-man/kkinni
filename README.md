@@ -36,7 +36,16 @@
 1. **필수 도구 설치**:
 - Java 17, Gradle, Docker, Redis, MariaDB.
 2. **Spring Boot 프로젝트 생성**:
-- Spring Initializr에서 **Spring Web**, **Spring Data JPA**, **Redis**, **QueryDSL** 추가.
+- Spring Initializr 설정
+- Project: Gradle - Groovy (기본값)
+- Language: Java (17)
+3. 의존성 추가
+- Spring Web: REST API 구현을 위한 필수 의존성
+- Spring Data JPA: 데이터베이스 연동
+- H2 Database: 로컬 개발을 위한 임베디드 데이터베이스
+- Lombok: 코드 간소화 (Getter/Setter 자동 생성)
+- Validation: 입력값 검증
+- update : **Redis**, **QueryDSL** 추가.
 3. **Docker 설정**:
 - MariaDB와 Redis를 컨테이너로 실행.
 
