@@ -15,8 +15,7 @@
 - **QueryDSL**을 이용한 동적 쿼리 설계 및 성능 최적화.
 - **TDD(Test-Driven Development)**를 기반으로 높은 신뢰성을 확보한 개발.
 
-### 1.2 아키텍처
-![Backend Architecture](https://velog.velcdn.com/images/urtimeislimited/post/78e28ab3-3eff-467b-af34-8f36dffb411d/image.png)
+
 
 ---
 
@@ -28,6 +27,7 @@
 - 지속 성장 가능한 대규모 트래픽을 처리하는 서비스 회사의 요구사항 기반.
 - **백엔드 아키텍처 설계**:
 - 아키텍처 다이어그램을 기준으로 데이터 흐름 및 트래픽 경로 확인.
+![Backend Architecture](https://velog.velcdn.com/images/urtimeislimited/post/78e28ab3-3eff-467b-af34-8f36dffb411d/image.png)
 
 ---
 
