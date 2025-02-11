@@ -18,7 +18,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -90,6 +89,7 @@ class OrderControllerTest {
             .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isNotFound()); // 404 기대
   }
+
   @Test
   @DisplayName("GET /orders/{id} - 유효하지 않은 ID로 요청하면 400 Bad Request를 반환한다")
   void getOrderById_invalidId_returnsBadRequest() throws Exception {
@@ -97,6 +97,7 @@ class OrderControllerTest {
             .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isBadRequest());
   }
+
   @Test
   @DisplayName("GET /orders/{id} - 존재하지 않는 ID로 요청하면 404 Not Found를 반환한다")
   void getOrderById_notFound_returnsNotFound() throws Exception {

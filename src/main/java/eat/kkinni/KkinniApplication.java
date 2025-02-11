@@ -8,6 +8,6 @@ public class KkinniApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(KkinniApplication.class, args);
-	}
 
+	}
 }
