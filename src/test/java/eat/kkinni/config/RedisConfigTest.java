@@ -10,6 +10,10 @@ class RedisConfigTest {
     String string = redisConfig.toString();
     System.out.println(string);
 
-    for (string : List.of(redisConfig))
+    for (string : List.of(redisConfig)) {
+      if (string.equals(string)) {
+        return 0;
+      }
+    }
   }
 }
