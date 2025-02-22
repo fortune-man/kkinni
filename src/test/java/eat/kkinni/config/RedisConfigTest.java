@@ -10,5 +10,6 @@ class RedisConfigTest {
     String string = redisConfig.toString();
     System.out.println(string);
 
+    for (string : List.of(redisConfig))
   }
 }
