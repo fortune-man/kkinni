@@ -2,6 +2,13 @@ package eat.kkinni.config;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class RedisConfigTest {
+import org.springframework.beans.factory.annotation.Autowired;
 
+class RedisConfigTest {
+  @Autowired
+  private RedisConfig redisConfig;
+
+  public RedisConfig getRedisConfig() {
+    return redisConfig;
+  }
 }
